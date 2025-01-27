@@ -10,55 +10,54 @@ import ProductsPage from "./ProductsPage";
 import ProductsMore from "./ProductsMore";
 
 interface IProdProps {
-    showsearch?: boolean,
+  showsearch?: boolean;
 }
 
-const Products = ({showsearch} : IProdProps) => {
-    const {isVisible: isLoadButtonVisible, isDisabled: isLoadButtonDisabled} = useAppSelector(selectLoadMoreButton);
-    const pages = useAppSelector(selectPages);
-    const dispatch = useAppDispatch();
-    const [searchParams] = useSearchParams();
-    const {categoryID, offset, query} = useAppSelector(selectApiParams);
+const Products = ({ showsearch }: IProdProps) => {
+  const { isVisible: isLoadButtonVisible, isDisabled: isLoadButtonDisabled } =
+    useAppSelector(selectLoadMoreButton);
+  const pages = useAppSelector(selectPages);
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const { categoryID, offset, query } = useAppSelector(selectApiParams);
 
-    useEffect(()=>{
-        const queryParam = {categoryID, offset, query};
-        const categoryParam = parseInt(searchParams.get("category") || "0");
-        const searchParam = searchParams.get("q") || "";
+  useEffect(() => {
+    const queryParam = { categoryID, offset, query };
+    const categoryParam = parseInt(searchParams.get("category") || "0");
+    const searchParam = searchParams.get("q") || "";
 
-        let isNeedUpdate = false;
+    let isNeedUpdate = false;
 
-        if (categoryParam >= 0 && categoryParam != categoryID) {
-            queryParam.categoryID = categoryParam;
-            isNeedUpdate = true;
-        }
+    if (categoryParam >= 0 && categoryParam != categoryID) {
+      queryParam.categoryID = categoryParam;
+      isNeedUpdate = true;
+    }
 
-        if (searchParam != ""){
-            queryParam.query = searchParam;
-            isNeedUpdate = true;
-        }
+    if (searchParam != "") {
+      queryParam.query = searchParam;
+      isNeedUpdate = true;
+    }
 
-        if (isNeedUpdate) {
-            dispatch(setApiParams(queryParam));
-        }
+    if (isNeedUpdate) {
+      dispatch(setApiParams(queryParam));
+    }
+  }, [categoryID, dispatch, offset, query, searchParams]);
 
-    },[searchParams])
-
-    return(
-        <>
-            <section className="catalog">
-                <h2 className="text-center">Каталог</h2>
-                {showsearch && <SearchProducts/>}
-                <Categories/>
-                {pages.map(({id, offset}) => (
-                    <ProductsPage key={id} offset={offset}/>
-                ))}
-                {isLoadButtonVisible && (
-                    <ProductsMore disabled={isLoadButtonDisabled} />
-                )}
-            </section>
-        </>
-    );
-
+  return (
+    <>
+      <section className="catalog">
+        <h2 className="text-center">Каталог</h2>
+        {showsearch && <SearchProducts />}
+        <Categories />
+        {pages.map(({ id, offset }) => (
+          <ProductsPage key={id} offset={offset} />
+        ))}
+        {isLoadButtonVisible && (
+          <ProductsMore disabled={isLoadButtonDisabled} />
+        )}
+      </section>
+    </>
+  );
 };
 
 export default Products;

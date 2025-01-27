@@ -5,13 +5,14 @@ import loadMoreButtonReducer from "./slices/loadMoreSlice";
 import pagesReducer from "./slices/pagesSlices";
 
 const store = configureStore({
-    reducer: {
-        [Api.reducerPath]:Api.reducer,
-        apiParams: apiParamsReducer,
-        loadMore: loadMoreButtonReducer,
-        pages: pagesReducer,
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(Api.middleware),
+  reducer: {
+    [Api.reducerPath]: Api.reducer,
+    apiParams: apiParamsReducer,
+    loadMore: loadMoreButtonReducer,
+    pages: pagesReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(Api.middleware),
 });
 
 export default store;

@@ -17,8 +17,12 @@ const SearchBlock = () => {
     }, [location])
 
     const handlerSearchClick = () => {
+        const params = new URLSearchParams();
         if (search.trim()){
-            navigate("catalog.html?q=" + encodeURIComponent(search || ""));
+            if (search) {
+                params.set('q', search);
+            }
+            navigate(`catalog.html?${params.toString()}`);
             dispatch(setApiParams({query:search}));
         }
         else {

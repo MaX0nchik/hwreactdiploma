@@ -4,20 +4,20 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const Layout = () => {
-    return(
-        <>
-            <Header />
-            <main className="container">
-                <div className="row">
-                    <div className="col">
-                        <Banner/>
-                        <Outlet/>
-                    </div>
-                </div>
-            </main>
-            <Footer/>
-        </>
-    )
+  return (
+    <>
+      <Header />
+      <main className="container">
+        <div className="row">
+          <div className="col">
+            <Banner />
+            <Outlet />
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
 };
 
 export default Layout;
