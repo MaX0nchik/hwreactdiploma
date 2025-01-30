@@ -3,6 +3,7 @@ import { Api } from "./Api";
 import apiParamsReducer from "./slices/apiPramsSlice";
 import loadMoreButtonReducer from "./slices/loadMoreSlice";
 import pagesReducer from "./slices/pagesSlices";
+import cartReducer from "./slices/cartSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     apiParams: apiParamsReducer,
     loadMore: loadMoreButtonReducer,
     pages: pagesReducer,
+    cartItems: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(Api.middleware),

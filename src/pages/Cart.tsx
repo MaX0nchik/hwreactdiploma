@@ -1,25 +1,11 @@
-import { useEffect, useState } from "react";
-import { CartItem } from "../models/Products";
-import { removeFromCart } from "../hooks/useLocalStorage";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { removeCartItem, selectCartItems } from "../redux/slices/cartSlice";
 
 const Cart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  let commonSum = 0;
-  useEffect(() => {
-    const loadCart = () => {
-      const savedCart = localStorage.getItem("cartItems");
-      if (savedCart) {
-        try {
-          const parsed: CartItem[] = JSON.parse(savedCart);
-          setCart(parsed);
-        } catch (e) {
-          console.log("Error: " + e);
-        }
-      }
-    };
+  const cart = useAppSelector(selectCartItems);
+  const dispatch = useAppDispatch();
 
-    loadCart();
-  }, []);
+  let commonSum = 0;
 
   cart.map((item) => {
     if (item.price) {
@@ -28,16 +14,11 @@ const Cart = () => {
   });
 
   const handleRemoveFromCart = (productId: number, selectedSize: string) => {
-    removeFromCart(productId, selectedSize);
-    const savedCart = localStorage.getItem("cartItems");
-    if (savedCart) {
-      try {
-        const parsed: CartItem[] = JSON.parse(savedCart);
-        setCart(parsed);
-      } catch (e) {
-        console.log("Error: " + e);
-      }
-    }
+    const newItem = {
+      id: productId,
+      selectedSize: selectedSize,
+    };
+    dispatch(removeCartItem(newItem));
   };
   return (
     <>

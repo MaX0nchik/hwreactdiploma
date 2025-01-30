@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../hooks/useHooksApi";
-import { ISizes } from "../models/Products";
+import { CartItem, ISizes } from "../models/Products";
 import ErrorMessage from "../components/ErrorMessage";
 import Preloader from "../components/Preloader";
 import { useState } from "react";
-import { addToCart } from "../hooks/useLocalStorage";
+import { useAppDispatch } from "../redux/hooks";
+import { addCartItem } from "../redux/slices/cartSlice";
 
 const Product = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const Product = () => {
     error,
     refetch,
   } = useGetProductQuery(id as string);
-
+  const dispatch = useAppDispatch();
   const [count, setCount] = useState<number>(1);
 
   const [selectedSize, setSize] = useState<string>("");
@@ -41,7 +42,16 @@ const Product = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart(selectedSize, count, product);
+    if (!selectedSize || !product?.id) {
+      return;
+    }
+
+    const newCartItem: CartItem = {
+      ...product,
+      selectedSize,
+      count,
+    };
+    dispatch(addCartItem(newCartItem));
   };
 
   return (

@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getCartItems } from "../hooks/useLocalStorage";
+import { useAppSelector } from "../redux/hooks";
+import { selectCartItems } from "../redux/slices/cartSlice";
 
 export const CartLogo = () => {
-  const [cartCount, setCartCount] = useState(0);
-
-  useEffect(() => {
-    const updateCartCount = () => {
-      setCartCount(getCartItems().length);
-    };
-
-    updateCartCount();
-    window.addEventListener("storage", updateCartCount);
-    return () => window.removeEventListener("storage", updateCartCount);
-  }, []);
-
+  const cartitems = useAppSelector(selectCartItems);
+  const count = cartitems ? cartitems.length : 0;
   return (
     <Link to="/cart.html">
       <div className="header-controls-pic header-controls-cart">
-        <div className={cartCount !== 0 ? "header-controls-cart-full" : ""}>
-          {cartCount === 0 ? "" : cartCount}
+        <div className={count !== 0 ? "header-controls-cart-full" : ""}>
+          {count === 0 ? "" : count}
         </div>
         <div className="header-controls-cart-menu"></div>
       </div>
